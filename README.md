@@ -20,7 +20,7 @@ Co só iso podíamos ver a base de datos así:
 
 ![imaxe](https://phpgrid.com/wp-content/uploads/2017/05/pm-employee-screenshot-1-1024x594.png)
 
-Finalmente, modifiquei o CSS como nos instruiron para personalizala e entender as particularidades de PHP. Pódense ver nas capturas adxuntas.
+Finalmente, modifiquei o CSS como nos instruiron para personalizala e entender as particularidades de PHP. A este efecto usouse un framework de bootstrap para modificar fácilmente as distintas seccións e que quedasen presentbales. Pódense ver nas capturas adxuntas.
 
 
 ## Contribucións
