@@ -1,34 +1,87 @@
-# Tablas con PHP
 
-Velaquí un traballo de unha base de datos con tablas feito en php.
+
+<h3 align="center">Formulario de inicio de sesión</h3>
+
+<p align="center">Un formulario en php para autentificarse.</p>
 
 ## Proceso
 
-Comezamos creando a estructura de carpetas e arquivos que se pode ver nesta ligazón: [Demo](https://phpgrid.com/example/build-project-management-application-scratch/)
+Dende Visual Studio Code fixen o sistema de login máis simple posible con PHP. Primeiro creamos 3 arquivos de php que enlazan entre sí: sesiones_login, sesiones_logout e sesiones_principal.
 
-Logo creamos unha base de datos en phpmyadmin e lle inyectamos os datos das táboas que se poden atopar no tutorial anterior.
+Dentro de login puxen o HTML que se vai a ver e máis unha función de PHP para detectar a clave e o usuario que se introducen no formulario de login e comprobar se son correctos.
 
-Unha vez dentro modificamos as seguintes liñas cos datos da nosa base creada (é decir, o seu nome e o usuario e contrasinal):
 
-```bash
-define('PHPGRID_DB_HOSTNAME','localhost');
-define('PHPGRID_DB_USERNAME', 'root');
-define('PHPGRID_DB_PASSWORD', '');
+
+```$function comprobar_usuario(nombre, clave){
+function comprobar_usuario($nombre, $clave){
+    if($nombre === "usuario" and $clave === "1234"){
+        $usu['nombre'] = "usuario";
+        $usu['rol'] = 0;
+        return $usu;
+    }elseif($nombre === "admin" and $clave === "1234"){
+        $usu['nombre'] = "admin";
+        $usu['rol'] = 1;
+        return $usu;
+    }else return FALSE;
+}
 ```
 
-Co só iso podíamos ver a base de datos así:
-
-![imaxe](https://phpgrid.com/wp-content/uploads/2017/05/pm-employee-screenshot-1-1024x594.png)
-
-Finalmente, modifiquei o CSS como nos instruiron para personalizala e entender as particularidades de PHP. A este efecto usouse un framework de bootstrap para modificar fácilmente as distintas seccións e que quedasen presentbales. Pódense ver nas capturas adxuntas.
+Unha vez comprobado que funciona, procedín a introducilo no noso traballo de Project Management. Primeiro borrei os enlaces de login do HTML e sustituíno polo formulario que acabo de facer. Logo, adaptei a función ao que necesitábamos nesta web e engadín unha máis para poder entrar á sección de empregados ou a sección de manager respectivamente.
 
 
-## Contribucións
 
-Tanto o tutorial como o contido da tabla foi cedido por Richard de [phpgrid.com](phpgrid.com).
+```
+function comprobar_usuario($nombre, $clave){
+    if($nombre === "usuario" and $clave === "1234"){
+        $usu['nombre'] = "usuario";
+        $usu['rol'] = 0;
+        return $usu;
+    }elseif($nombre === "employee" and $clave === "1234"){
+        $usu['nombre'] = "employee";
+        $usu['rol'] = 1;
+        return $usu;
+    }else return FALSE;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $usu = comprobar_usuario($_POST['usuario'], $_POST['clave']);
+    if($usu==FALSE){
+        $err = TRUE;
+        $usuario = $_POST['usuario'];
+    }else{
+        session_start();
+        $_SESSION['usuario'] = $_POST['usuario'];
+        header("Location: employee/tasks.php");
+    }
+}
 
-As fontes son parte do programa google fonts, cedidas con licenza estándar [Google Fonts](Fonts.google.com).
+function comprobar_manager($nombre, $clave){
+  if($nombre === "manager" and $clave === "1234"){
+      $usu['nombre'] = "manager";
+      $usu['rol'] = 0;
+      return $usu;
+  }elseif($nombre === "admin" and $clave === "1234"){
+      $usu['nombre'] = "admin";
+      $usu['rol'] = 1;
+      return $usu;
+  }else return FALSE;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $usu = comprobar_manager($_POST['usuario'], $_POST['clave']);
+  if($usu==FALSE){
+      $err = TRUE;
+      $usuario = $_POST['usuario'];
+  }else{
+      session_start();
+      $_SESSION['usuario'] = $_POST['usuario'];
+      header("Location: manager/clients.php");
+  }
+}
+```
 
-## Resultados
+Se entramos como Admin ou manager vamos á carpeta de manager e vemos as seccións para xefes, e se entramos como usuario ou empregado accedemos á sección de tarefas dentro da carpeta de employees, desa maneira integramos sen problema o formulario que acabamos de facer nunha web previamente feita. 
 
-A base de datos é plenamente accesible tanto como manager como con empregado, e cada un ve correctamente só os datos que lle corresponden. Do mesmo xeito, as tablas compórtanse como deberían e poden estirarse e contraerse a vontade, e están totalmente enlazadas entre si.
+
+
+![2022-01-26 09_24_45-Window.png](C:\Users\Usuario\Desktop\2022-01-26%2009_24_45-Window.png)
+
+![2022-01-26 09_25_44-Window.png](C:\Users\Usuario\Desktop\2022-01-26%2009_25_44-Window.png)
